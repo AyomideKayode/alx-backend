@@ -157,9 +157,41 @@ print(server.get_hyper_index(3, 2))
 
 ## Tasks
 
+### 0. [Simple helper function](./0-simple_helper_function.py) :
+
+Write a function named `index_range` that takes two integer arguments `page` and `page_size`.
+
+The function should return a tuple of size two containing a start index and an end index corresponding to the range of indexes to return in a list for those particular pagination parameters.
+
+Page numbers are 1-indexed, i.e. the first page is page 1.
+
+```bash
+bob@dylan:~$ cat 0-main.py
+#!/usr/bin/env python3
+"""
+Main file
+"""
+
+index_range = __import__('0-simple_helper_function').index_range
+
+res = index_range(1, 7)
+print(type(res))
+print(res)
+
+res = index_range(page=3, page_size=15)
+print(type(res))
+print(res)
+
+bob@dylan:~$ ./0-main.py
+<class 'tuple'>
+(0, 7)
+<class 'tuple'>
+(30, 45)
+bob@dylan:~$
+```
+
 | Task | File |
 | ---- | ---- |
-| 0. Simple helper function | [0-simple_helper_function.py](./0-simple_helper_function.py) |
 | 1. Simple pagination | [1-simple_pagination.py](./1-simple_pagination.py) |
 | 2. Hypermedia pagination | [2-hypermedia_pagination.py](./2-hypermedia_pagination.py) |
 | 3. Deletion-resilient hypermedia pagination | [3-hypermedia_del_pagination.py](./3-hypermedia_del_pagination.py) |
