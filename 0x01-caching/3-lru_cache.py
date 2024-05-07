@@ -10,11 +10,11 @@ BaseCaching = __import__('base_caching').BaseCaching
 
 class LRUCache(BaseCaching):
     """ LRUCache class that inherits from BaseCaching
-    Uses LIFO algorithm to manage cache.
+    Uses LRU algorithm to manage cache.
     """
 
     def __init__(self):
-        """ Initialize LIFOCache
+        """ Initialize LRUCache
         """
         super().__init__()
         self.access_order = []  # Track order of access
