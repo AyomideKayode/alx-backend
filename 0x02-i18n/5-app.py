@@ -14,8 +14,14 @@ with our supported languages.
 Implement a mocked user login system.
 """
 
-from flask import Flask, render_template, request, g
+from flask import (
+    Flask,
+    render_template,
+    request,
+    g
+)
 from flask_babel import Babel
+
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -65,7 +71,8 @@ def before_request():
     """Execute before each request to retrieve user information.
     Retreives the user and assigns it to the global variable g.user.
     """
-    g.user = get_user()
+    user = get_user()
+    g.user = user
 
 
 @babel.localeselector
@@ -75,9 +82,6 @@ def get_locale():
     locale = request.args.get('locale')
     if locale in app.config['LANGUAGES']:
         return locale
-    # Check if the user is logged in and has a locale preference
-    # if g.user and g.user['locale'] in app.config['LANGUAGES']:
-    #     return g.user['locale']
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
