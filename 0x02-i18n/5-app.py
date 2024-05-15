@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 """ Basic Flask app with mocked user login system.
-Instantiate the Babel object and configure the app to support multiple languages.
+Instantiate the Babel object and configure the app to support
+multiple languages.
 Create a Config class with the following attributes:
     LANGUAGES(list): List of supported languages.
     BABEL_DEFAULT_LOCALE(str): Default language for the app.
     BABEL_DEFAULT_TIMEZONE(str): Default timezone for the app.
 Define the route for the root URL.
 Create a get_locale function with the babel.localeselector decorator.
-Use request.accept_languages to determine the best match with our supported languages.
+Use request.accept_languages to determine the best match
+with our supported languages.
 Implement a mocked user login system.
 """
 
@@ -47,27 +49,15 @@ users = {
 }
 
 
-@babel.localeselector
-def get_locale():
-    """Determine the best match for supported languages."""
-    # Check if the locale parameter is present in the request
-    locale = request.args.get('locale')
-    if locale in app.config['LANGUAGES']:
-        return locale
-    # Check if the user is logged in and has a locale preference
-    if g.user and g.user['locale'] in app.config['LANGUAGES']:
-        return g.user['locale']
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
-
-
 def get_user():
-    """Get user from the request.
+    """_summary_
+    Returns:
+        _type_: _description_
     """
-    try:
-        user_id = int(request.args.get('login_as'))
-        return users.get(user_id)
-    except (TypeError, ValueError):
-        return None
+    id = request.args.get('login_as')
+    if id is not None and int(id) in users.keys():
+        return users.get(int(id))
+    return None
 
 
 @app.before_request
@@ -76,6 +66,22 @@ def before_request():
     Retreives the user and assigns it to the global variable g.user.
     """
     g.user = get_user()
+
+
+@babel.localeselector
+def get_locale():
+    """Determine the best match for supported languages."""
+    # Check if the locale parameter is present in the request
+    locale = request.args.get('locale')
+    if locale in app.config['LANGUAGES']:
+        return locale
+    # Check if the user is logged in and has a locale preference
+    # if g.user and g.user['locale'] in app.config['LANGUAGES']:
+    #     return g.user['locale']
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+babel.init_app(app)  # No 'localeselector' attribute here
 
 
 # Define the route for the root URL
