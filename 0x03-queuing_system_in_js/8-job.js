@@ -14,9 +14,12 @@ function createPushNotificationsJobs(jobs, queue) {
     const job = queue
       .create('push_notification_code_3', jobData)
       .save((err) => {
-        if (!err) {
+        if (err) {
+          console.log(`Notification job failed: ${err}`);
+        } else {
           console.log(`Notification job created: ${job.id}`);
         }
+
       });
 
     // event listeners for the job status
@@ -24,8 +27,8 @@ function createPushNotificationsJobs(jobs, queue) {
       .on('complete', () => {
         console.log(`Notification job ${job.id} completed`);
       })
-      .on('failed', () => {
-        console.log(`Notification job ${job.id} failed`);
+      .on('failed', (err) => {
+        console.log(`Notification job ${job.id} failed: ${err}`);
       })
       .on('progress', (progress) => {
         console.log(`Notification job ${job.id} ${progress}% complete`);
